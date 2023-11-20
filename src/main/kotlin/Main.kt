@@ -33,10 +33,11 @@ fun App() {
                         failedCommandState = true
                     }
                     resourcesTableState = sdmStatus.toResourcesTable().filter(filters)
-                })
+                }, loadOnStartup = true)
 
                 if (failedCommandState) {
-                    Text("Failed to run SDM command. Is the SDM-cli installed?", color = Color.Red)
+                    Text("Failed to run SDM command. Is the SDM-cli installed?",
+                        color = Color.Red, modifier = Modifier.fillMaxWidth())
                 }
             },
             bottomBar = {
@@ -50,26 +51,23 @@ fun App() {
                 userScrollEnabled = true
             ) {
                 items(count = resourcesTableState.resources.size) { item ->
-                    val text = resourcesTableState.resources[item]
-                    val shortText = text.replace("\\t+".toRegex(), " ")
-                        .replace("\\s+".toRegex(), "|")
-
+                    val line = resourcesTableState.resources[item]
 
                     Row(modifier = Modifier.fillMaxWidth().padding(2.dp)) {
 
-                        if (shortText.contains("DATASOURCE")) {
+                        if (line.contains("DATASOURCE")) {
                             SectionText("DATA SOURCES")
-                        } else if (shortText.contains("SERVER")) {
+                        } else if (line.contains("SERVER")) {
                             SectionText("SERVERS")
                         } else {
                             Row (modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(5.dp)
-                                .background(Color.LightGray)
-                                .align(Alignment.CenterVertically)
+                                .background(Color.LightGray),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                ServiceDetailsRow(shortText)
-                                val disconnected = text.contains("not connected")
+                                ServiceDetailsRow(line)
+                                val disconnected = line.contains("not|connected")
                                 ConnectToggleButton(disconnected)
                             }
                         }

@@ -18,7 +18,7 @@ fun ConnectToggleButton(disconnected: Boolean) {
         enabled = true,
         modifier = Modifier
             .requiredHeight(35.dp)
-            .paddingFromBaseline(top = 5.dp)
+            .paddingFromBaseline(top = 15.dp)
             .fillMaxWidth(),
         onClick = {},
         colors = ButtonDefaults.buttonColors(

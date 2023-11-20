@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -18,7 +17,7 @@ fun ServiceDetailsRow(text: String) {
         modifier = Modifier
             .padding(top = 5.dp, bottom = 7.dp)
             .fillMaxHeight()
-            .fillMaxWidth(fraction = 0.85f),
+            .fillMaxWidth(fraction = 0.80f),
         textAlign = TextAlign.Left,
         fontSize = 1.em
     )

@@ -15,7 +15,7 @@ fun ScaffoldBottomBar(itemCount: Int) {
     Text(
         "Resources found: $itemCount",
         modifier = Modifier.height(30.dp).background(Color.Black).fillMaxWidth(),
-        fontSize = 0.6.em,
+        fontSize = 0.7.em,
         color = Color.White
     )
 }
