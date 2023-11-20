@@ -5,7 +5,8 @@ data class ResourcesTable(
 )
 
 fun ResourcesTable.filter(filters: String): ResourcesTable {
-    return ResourcesTable(resources.filter { it.contains(filters) })
+    val splitFilters = filters.split(",")
+    return ResourcesTable(resources.filter { resource -> splitFilters.all { resource.contains(it) } })
 }
 
 fun String.toResourcesTable(): ResourcesTable {

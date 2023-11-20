@@ -18,8 +18,8 @@ fun ConnectToggleButton(disconnected: Boolean) {
         enabled = true,
         modifier = Modifier
             .requiredHeight(35.dp)
-            .fillMaxWidth(fraction = 0.35f)
-            .paddingFromBaseline(0.dp),
+            .paddingFromBaseline(top = 5.dp)
+            .fillMaxWidth(),
         onClick = {},
         colors = ButtonDefaults.buttonColors(
             backgroundColor = if (disconnected) Color.Red else Color.Green,

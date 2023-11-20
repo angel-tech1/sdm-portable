@@ -8,14 +8,16 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun ScaffoldTopBar(onClick: (filter: String) -> Unit) {
 
     var text by remember { mutableStateOf("") }
 
-    Row {
+    Row (modifier = Modifier.fillMaxWidth()) {
         TextField(
             value = text,
             onValueChange = { text = it },
@@ -28,8 +30,11 @@ fun ScaffoldTopBar(onClick: (filter: String) -> Unit) {
 
         Button(
             onClick = { onClick(text) },
-            modifier = Modifier.wrapContentHeight()
-                .fillMaxWidth(fraction = 0.3f),
+            modifier = Modifier.requiredHeight(55.dp)
+                .requiredWidth(120.dp)
+                .fillMaxWidth()
+                .padding(5.dp)
+                .align(Alignment.CenterVertically),
         ) {
             Text("Find")
         }

@@ -16,11 +16,10 @@ fun ServiceDetailsRow(text: String) {
     Text(
         text,
         modifier = Modifier
-            .padding(top = 3.dp, bottom = 4.dp)
+            .padding(top = 5.dp, bottom = 7.dp)
             .fillMaxHeight()
-            .fillMaxWidth(fraction = 0.65f),
+            .fillMaxWidth(fraction = 0.85f),
         textAlign = TextAlign.Left,
-        fontSize = 1.em,
-        fontWeight = FontWeight.Bold
+        fontSize = 1.em
     )
 }
