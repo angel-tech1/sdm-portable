@@ -6,7 +6,8 @@ import java.util.concurrent.TimeUnit
 fun String.runCommand(
     workingDir: File = File("."),
     timeoutAmount: Long = 60,
-    timeoutUnit: TimeUnit = TimeUnit.SECONDS
+    timeoutUnit: TimeUnit = TimeUnit.SECONDS,
+    afterCommand: () -> Unit = {}
 ): String? = runCatching {
     ProcessBuilder("\\s".toRegex().split(this))
         .directory(workingDir)
