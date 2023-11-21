@@ -13,6 +13,6 @@ fun String.runCommand(
         .directory(workingDir)
         .redirectOutput(ProcessBuilder.Redirect.PIPE)
         .redirectError(ProcessBuilder.Redirect.PIPE)
-        .start().also { it.waitFor(timeoutAmount, timeoutUnit) }
+        .start().also { it.waitFor(timeoutAmount, timeoutUnit) }.also { afterCommand() }
         .inputStream.bufferedReader().readText()
 }.onFailure { it.printStackTrace() }.getOrNull()

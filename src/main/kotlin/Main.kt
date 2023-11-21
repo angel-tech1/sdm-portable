@@ -1,18 +1,22 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.github.sdm.portable.composables.*
+import com.github.sdm.portable.composables.ScaffoldBottomBar
+import com.github.sdm.portable.composables.ScaffoldTopBar
+import com.github.sdm.portable.composables.SectionText
+import com.github.sdm.portable.composables.ServiceItem
 import com.github.sdm.portable.domain.ResourcesTable
 import com.github.sdm.portable.domain.filter
 import com.github.sdm.portable.domain.toResourcesTable
@@ -23,21 +27,34 @@ import com.github.sdm.portable.os.runCommand
 fun App() {
     var resourcesTableState by remember { mutableStateOf(ResourcesTable(emptyList())) }
     var failedCommandState by remember { mutableStateOf(false) }
+    var filtersState by remember { mutableStateOf("") }
+
+    val onSearch = {
+        filters: String ->
+            val sdmStatus: String = "sdm status".runCommand() ?: ""
+            if (sdmStatus.isBlank()) {
+                failedCommandState = true
+            }
+            resourcesTableState = sdmStatus.toResourcesTable().filter(filters)
+    }
 
     MaterialTheme {
         Scaffold(
             topBar = {
-                ScaffoldTopBar(onClick = { filters: String ->
-                    val sdmStatus: String = "sdm status".runCommand() ?: ""
-                    if (sdmStatus.isBlank()) {
-                        failedCommandState = true
-                    }
-                    resourcesTableState = sdmStatus.toResourcesTable().filter(filters)
-                }, loadOnStartup = true)
+                ScaffoldTopBar(
+                    onSearch = onSearch,
+                    onTextChanges = { filters ->
+                        filtersState = filters
+                    },
+                    loadOnStartup = true,
+                    filtersText = filtersState
+                )
 
                 if (failedCommandState) {
-                    Text("Failed to run SDM command. Is the SDM-cli installed?",
-                        color = Color.Red, modifier = Modifier.fillMaxWidth())
+                    Text(
+                        "Failed to run SDM command. Is the SDM-cli installed?",
+                        color = Color.Red, modifier = Modifier.fillMaxWidth()
+                    )
                 }
             },
             bottomBar = {
@@ -60,16 +77,7 @@ fun App() {
                         } else if (line.contains("SERVER")) {
                             SectionText("SERVERS")
                         } else {
-                            Row (modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp)
-                                .background(Color.LightGray),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                ServiceDetailsRow(line)
-                                val disconnected = line.contains("not|connected")
-                                ConnectToggleButton(disconnected)
-                            }
+                            ServiceItem(line, afterToggle = { onSearch(filtersState) })
                         }
                     }
                 }

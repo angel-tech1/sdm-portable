@@ -11,16 +11,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.github.sdm.portable.os.runCommand
 
 @Composable
-fun ConnectToggleButton(disconnected: Boolean) {
+fun ConnectToggleButton(
+    disconnected: Boolean,
+    serviceId: String,
+    afterToggle: () -> Unit
+) {
     Button(
         enabled = true,
         modifier = Modifier
             .requiredHeight(35.dp)
             .paddingFromBaseline(top = 15.dp)
             .fillMaxWidth(),
-        onClick = {},
+        onClick = {
+            val command = if (disconnected) "connect" else "disconnect"
+            "sdm $command $serviceId".runCommand(timeoutAmount = 5, afterCommand = afterToggle)
+        },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = if (disconnected) Color.Red else Color.Green,
             contentColor = Color.White

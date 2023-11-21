@@ -16,23 +16,26 @@ import androidx.compose.ui.input.key.onKeyEvent
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ScaffoldTopBar(onClick: (filter: String) -> Unit, loadOnStartup: Boolean) {
-
-    var text by remember { mutableStateOf("") }
+fun ScaffoldTopBar(
+    onSearch: (filter: String) -> Unit,
+    onTextChanges: (filters: String) -> Unit,
+    loadOnStartup: Boolean,
+    filtersText: String
+) {
 
     if (loadOnStartup) {
-        onClick(text)
+        onSearch(filtersText)
     }
 
     Row (modifier = Modifier.fillMaxWidth()) {
         TextField(
-            value = text,
-            onValueChange = { text = it },
+            value = filtersText,
+            onValueChange = onTextChanges,
             label = { Text("Find by comma-separated keywords") },
             modifier = Modifier.fillMaxWidth()
                 .onKeyEvent {
                     if (it.key == Key.Enter) {
-                        onClick(text)
+                        onSearch(filtersText)
                         true
                     }
                     false
