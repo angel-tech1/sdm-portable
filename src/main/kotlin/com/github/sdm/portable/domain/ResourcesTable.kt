@@ -15,6 +15,6 @@ fun String.toResourcesTable(): ResourcesTable {
     }
 
     return ResourcesTable(this.split('\n')
-        .filter { it.isNotBlank() }.map { it.replace("\\t+".toRegex(), " ")
+        .filter { it.isNotBlank() }.map { it.trim().replace("\\t+".toRegex(), " ")
             .replace("\\s+".toRegex(), "|") })
 }
