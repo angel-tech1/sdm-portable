@@ -8,11 +8,14 @@ fun String.runCommand(
     timeoutAmount: Long = 60,
     timeoutUnit: TimeUnit = TimeUnit.SECONDS,
     afterCommand: () -> Unit = {}
-): String? = runCatching {
-    ProcessBuilder("\\s".toRegex().split(this))
-        .directory(workingDir)
-        .redirectOutput(ProcessBuilder.Redirect.PIPE)
-        .redirectError(ProcessBuilder.Redirect.PIPE)
-        .start().also { it.waitFor(timeoutAmount, timeoutUnit) }.also { afterCommand() }
-        .inputStream.bufferedReader().readText()
-}.onFailure { it.printStackTrace() }.getOrNull()
+): String? {
+    println("Command: $this")
+    return runCatching {
+        ProcessBuilder("\\s".toRegex().split(this))
+            .directory(workingDir)
+            .redirectOutput(ProcessBuilder.Redirect.PIPE)
+            .redirectError(ProcessBuilder.Redirect.PIPE)
+            .start().also { it.waitFor(timeoutAmount, timeoutUnit) }.also { afterCommand() }
+            .inputStream.bufferedReader().readText()
+    }.onFailure { it.printStackTrace() }.getOrNull()
+}

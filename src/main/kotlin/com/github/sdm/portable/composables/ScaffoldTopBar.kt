@@ -11,10 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ScaffoldTopBar(
     onSearch: (filter: String) -> Unit,
@@ -23,8 +23,11 @@ fun ScaffoldTopBar(
     filtersText: String
 ) {
 
-    if (loadOnStartup) {
+    var initializedState by remember { mutableStateOf(false) }
+
+    if (loadOnStartup && !initializedState) {
         onSearch(filtersText)
+        initializedState = true
     }
 
     Row (modifier = Modifier.fillMaxWidth()) {
@@ -34,15 +37,23 @@ fun ScaffoldTopBar(
             label = { Text("Find by comma-separated keywords") },
             modifier = Modifier.fillMaxWidth()
                 .onKeyEvent {
-                    if (it.key == Key.Enter) {
-                        onSearch(filtersText)
-                        true
-                    }
-                    false
+                    onKeyEvent(it, onSearch, filtersText)
+                    true
                 },
             leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
             singleLine = true,
             maxLines = 1
         )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+private fun onKeyEvent(
+    it: KeyEvent,
+    onSearch: (filter: String) -> Unit,
+    filtersText: String
+) {
+    if (it.key == Key.Enter) {
+        onSearch(filtersText)
     }
 }

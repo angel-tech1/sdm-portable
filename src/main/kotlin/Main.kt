@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import com.github.sdm.portable.composables.ScaffoldBottomBar
 import com.github.sdm.portable.composables.ScaffoldTopBar
 import com.github.sdm.portable.composables.SectionText
@@ -29,23 +31,18 @@ fun App() {
     var failedCommandState by remember { mutableStateOf(false) }
     var filtersState by remember { mutableStateOf("") }
 
-    val onSearch = {
-        filters: String ->
-            val sdmStatus: String = "sdm status".runCommand() ?: ""
-            if (sdmStatus.isBlank()) {
-                failedCommandState = true
-            }
-            resourcesTableState = sdmStatus.toResourcesTable().filter(filters)
+    val onSearchGetStatusAndUpdateTable = { commaSeparatedFilters: String ->
+        val sdmStatus: String = "sdm status".runCommand() ?: ""
+        failedCommandState = sdmStatus.isBlank()
+        resourcesTableState = sdmStatus.toResourcesTable().filter(commaSeparatedFilters)
     }
 
     MaterialTheme {
         Scaffold(
             topBar = {
                 ScaffoldTopBar(
-                    onSearch = onSearch,
-                    onTextChanges = { filters ->
-                        filtersState = filters
-                    },
+                    onSearch = onSearchGetStatusAndUpdateTable,
+                    onTextChanges = { filters -> filtersState = filters },
                     loadOnStartup = true,
                     filtersText = filtersState
                 )
@@ -53,7 +50,8 @@ fun App() {
                 if (failedCommandState) {
                     Text(
                         "Failed to run SDM command. Is the SDM-cli installed?",
-                        color = Color.Red, modifier = Modifier.fillMaxWidth()
+                        color = Color.Red,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             },
@@ -68,17 +66,12 @@ fun App() {
                 userScrollEnabled = true
             ) {
                 items(count = resourcesTableState.resources.size) { item ->
-                    val line = resourcesTableState.resources[item]
+                    val sdmStatusLine = resourcesTableState.resources[item]
 
                     Row(modifier = Modifier.fillMaxWidth().padding(2.dp)) {
-
-                        if (line.contains("DATASOURCE")) {
-                            SectionText("DATA SOURCES")
-                        } else if (line.contains("SERVER")) {
-                            SectionText("SERVERS")
-                        } else {
-                            ServiceItem(line, afterToggle = { onSearch(filtersState) })
-                        }
+                        renderSdmStatusLine(sdmStatusLine,
+                            afterToggle = onSearchGetStatusAndUpdateTable,
+                            commaSeparatedFilters = filtersState)
                     }
                 }
             }
@@ -86,11 +79,36 @@ fun App() {
     }
 }
 
+@Composable
+fun renderSdmStatusLine (
+    sdmStatusLine: String,
+    afterToggle: (String) -> Unit,
+    commaSeparatedFilters: String
+) {
+    if (sdmStatusLine.contains("DATASOURCE")) {
+        SectionText("DATA SOURCES")
+    } else if (sdmStatusLine.contains("SERVER")) {
+        SectionText("SERVERS")
+    } else {
+        ServiceItem(
+            sdmStatusLine,
+            afterToggle = { afterToggle(commaSeparatedFilters) }
+        )
+    }
+}
+
 fun main() = application {
+    val windowState = rememberWindowState(
+        placement = WindowPlacement.Floating,
+        width = 1280.dp,
+        height = 800.dp
+    )
+
     Window(
         onCloseRequest = ::exitApplication,
         title = "StrongDM portable (unofficial)",
-        resizable = true
+        resizable = true,
+        state = windowState
     ) {
         App()
     }

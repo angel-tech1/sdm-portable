@@ -30,6 +30,16 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "sdm_portable"
             packageVersion = "1.0.0"
+
+            macOS {
+                iconFile.set(project.file("icon.ico"))
+            }
+            windows {
+                iconFile.set(project.file("icon.ico"))
+            }
+            linux {
+                iconFile.set(project.file("icon.png"))
+            }
         }
     }
 }
