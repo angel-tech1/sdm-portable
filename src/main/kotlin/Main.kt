@@ -67,7 +67,7 @@ fun App() {
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color.DarkGray)
+                        .background(Color.Gray)
                         .fillMaxHeight(),
                     userScrollEnabled = true
                 ) {
