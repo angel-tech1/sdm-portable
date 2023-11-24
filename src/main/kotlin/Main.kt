@@ -1,8 +1,6 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -10,6 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
@@ -46,32 +46,39 @@ fun App() {
                     loadOnStartup = true,
                     filtersText = filtersState
                 )
-
-                if (failedCommandState) {
-                    Text(
-                        "Failed to run SDM command. Is the SDM-cli installed?",
-                        color = Color.Red,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
             },
             bottomBar = {
                 ScaffoldBottomBar(resourcesTableState.resources.size)
             }
         ) {
 
-            LazyColumn(
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                modifier = Modifier.fillMaxWidth(),
-                userScrollEnabled = true
-            ) {
-                items(count = resourcesTableState.resources.size) { item ->
-                    val sdmStatusLine = resourcesTableState.resources[item]
+            if (failedCommandState) {
+                Text(
+                    "Failed to run SDM command. Is the SDM-cli installed?",
+                    color = Color.Red,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.fillMaxWidth()
+                        .background(Color.DarkGray)
+                        .fillMaxHeight()
+                )
+            } else {
+                LazyColumn(
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.DarkGray)
+                        .fillMaxHeight(),
+                    userScrollEnabled = true
+                ) {
+                    items(count = resourcesTableState.resources.size) { item ->
+                        val sdmStatusLine = resourcesTableState.resources[item]
 
-                    Row(modifier = Modifier.fillMaxWidth().padding(2.dp)) {
-                        renderSdmStatusLine(sdmStatusLine,
-                            afterToggle = onSearchGetStatusAndUpdateTable,
-                            commaSeparatedFilters = filtersState)
+                        Row(modifier = Modifier.fillMaxWidth().padding(2.dp)) {
+                            renderSdmStatusLine(sdmStatusLine,
+                                afterToggle = onSearchGetStatusAndUpdateTable,
+                                commaSeparatedFilters = filtersState)
+                        }
                     }
                 }
             }
