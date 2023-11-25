@@ -75,9 +75,11 @@ fun App() {
                         val sdmStatusLine = resourcesTableState.resources[item]
 
                         Row(modifier = Modifier.fillMaxWidth().padding(2.dp)) {
-                            renderSdmStatusLine(sdmStatusLine,
+                            renderSdmStatusLine(
+                                sdmStatusLine,
                                 afterToggle = onSearchGetStatusAndUpdateTable,
-                                commaSeparatedFilters = filtersState)
+                                commaSeparatedFilters = filtersState
+                            )
                         }
                     }
                 }
@@ -86,16 +88,18 @@ fun App() {
     }
 }
 
+// Known SDM sections
+val sections = listOf("DATASOURCE", "WEBSITE", "SERVER")
+
 @Composable
-fun renderSdmStatusLine (
+fun renderSdmStatusLine(
     sdmStatusLine: String,
     afterToggle: (String) -> Unit,
     commaSeparatedFilters: String
 ) {
-    if (sdmStatusLine.contains("DATASOURCE")) {
-        SectionText("DATA SOURCES")
-    } else if (sdmStatusLine.contains("SERVER")) {
-        SectionText("SERVERS")
+
+    if (sections.any { s -> sdmStatusLine.contains(s) }) {
+        SectionText(sdmStatusLine)
     } else {
         ServiceItem(
             sdmStatusLine,

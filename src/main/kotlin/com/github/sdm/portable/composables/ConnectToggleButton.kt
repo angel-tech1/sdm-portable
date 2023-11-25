@@ -35,7 +35,7 @@ fun ConnectToggleButton(
     ) {
         Text(
             if (disconnected) "Disconnected" else "Connected",
-            fontSize = 0.8.em,
+            fontSize = 0.9.em,
             fontWeight = FontWeight.Bold
         )
     }
