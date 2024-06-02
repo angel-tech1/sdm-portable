@@ -26,7 +26,7 @@ fun App(testMode: Boolean? = false) {
 
     val onSearchGetStatusAndUpdateTable = { commaSeparatedFilters: String? ->
         val sdmStatus = if (testMode == true) {
-            readTestingFile("/test/sdm_status.txt")
+            readTestingFile("/test/please_login.txt")
         } else {
             "sdm status".runCommand() ?: ""
         }
@@ -41,14 +41,14 @@ fun App(testMode: Boolean? = false) {
                     onSearch = onSearchGetStatusAndUpdateTable,
                     onTextChanges = { filters -> filtersState = filters },
                     loadOnStartup = true,
-                    filtersText = filtersState
+                    filtersText = filtersState,
+                    cliFailed = failedCommandState
                 )
             },
             bottomBar = {
                 ScaffoldBottomBar(resourcesTableState.resources.size)
             }
         ) {
-
             if (failedCommandState) {
                 CliFailed()
             } else {
@@ -72,7 +72,7 @@ fun main() = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "StrongDM portable (unofficial)",
+        title = "StrongDM (unofficial)",
         resizable = true,
         state = windowState
     ) {

@@ -20,7 +20,8 @@ fun ScaffoldTopBar(
     onSearch: (filter: String) -> Unit,
     onTextChanges: (filters: String) -> Unit,
     loadOnStartup: Boolean,
-    filtersText: String
+    filtersText: String,
+    cliFailed: Boolean
 ) {
 
     var initializedState by remember { mutableStateOf(false) }
@@ -33,6 +34,7 @@ fun ScaffoldTopBar(
     Row (modifier = Modifier.fillMaxWidth()) {
         TextField(
             value = filtersText,
+            enabled = !cliFailed,
             onValueChange = onTextChanges,
             label = { Text("Find by comma-separated keywords") },
             modifier = Modifier.fillMaxWidth()
