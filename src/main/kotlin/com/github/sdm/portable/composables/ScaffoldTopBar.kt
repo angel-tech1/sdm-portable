@@ -49,10 +49,13 @@ fun ScaffoldTopBar(
 
 @OptIn(ExperimentalComposeUiApi::class)
 private fun onKeyEvent(
-    it: KeyEvent,
+    it: KeyEvent?,
     onSearch: (filter: String) -> Unit,
-    filtersText: String
+    filtersText: String?
 ) {
+    if (it == null || filtersText == null)
+        return // ignore
+
     if (it.key == Key.Enter) {
         onSearch(filtersText)
     }
