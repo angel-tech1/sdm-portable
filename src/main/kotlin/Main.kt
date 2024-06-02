@@ -31,7 +31,8 @@ fun App(testMode: Boolean? = false) {
             "sdm status".runCommand() ?: ""
         }
         failedCommandState = sdmStatus.isBlank() || sdmStatus.lowercase().contains("login again")
-        resourcesTableState = sdmStatus.toResourcesTable().filter(commaSeparatedFilters ?: "")
+        val keywords = if (failedCommandState) "" else commaSeparatedFilters ?: ""
+        resourcesTableState = sdmStatus.toResourcesTable().filter(keywords)
     }
 
     MaterialTheme {
