@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.github.sdm.portable"
-version = "0.0.2"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "sdm_portable"
-            packageVersion = "0.0.2-nightly"
+            packageVersion = "1.0.2"
 
             macOS {
                 iconFile.set(project.file("icon.ico"))
