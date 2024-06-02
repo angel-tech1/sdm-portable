@@ -1,0 +1,15 @@
+DATASOURCE NAME           STATUS            PORT      TYPE
+mysql 5.6.39              not connected     13311     mysql
+jsonb-test                not connected     15438     aurora-postgres
+Cache01                   not connected     16379     redis
+CacheM01                  not connected     21211     memcached
+Inventory DB (Heroku)     not connected     15434     postgres
+Marketing DB RW           not connected     15435     postgres
+MySQL 5.6                 not connected     13310     mysql
+Pricing DB RO             not connected     13306     mysql
+Users Profile DB RO       not connected     15436     postgres
+
+SERVER                    STATUS            PORT      TYPE
+RDP prod server           not connected     13389     rdp
+prod01 sudo               not connected     62609     ssh
+prod02                    not connected     62524     ssh

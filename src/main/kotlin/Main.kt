@@ -23,18 +23,27 @@ import com.github.sdm.portable.domain.ResourcesTable
 import com.github.sdm.portable.domain.filter
 import com.github.sdm.portable.domain.toResourcesTable
 import com.github.sdm.portable.os.runCommand
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Path
 
 @Composable
 @Preview
-fun App() {
+fun App(testMode: Boolean? = false) {
     var resourcesTableState by remember { mutableStateOf(ResourcesTable(emptyList())) }
     var failedCommandState by remember { mutableStateOf(false) }
     var filtersState by remember { mutableStateOf("") }
 
     val onSearchGetStatusAndUpdateTable = { commaSeparatedFilters: String ->
-        val sdmStatus: String = "sdm status".runCommand() ?: ""
-        failedCommandState = sdmStatus.isBlank()
-        resourcesTableState = sdmStatus.toResourcesTable().filter(commaSeparatedFilters)
+        if (testMode == true) {
+            val sdmStatus: String = readTestingFile("/test/sdm_status.txt")
+            failedCommandState = sdmStatus.isBlank()
+            resourcesTableState = sdmStatus.toResourcesTable().filter(commaSeparatedFilters)
+        } else {
+            val sdmStatus: String = "sdm status".runCommand() ?: ""
+            failedCommandState = sdmStatus.isBlank()
+            resourcesTableState = sdmStatus.toResourcesTable().filter(commaSeparatedFilters)
+        }
     }
 
     MaterialTheme {
@@ -89,6 +98,11 @@ fun App() {
     }
 }
 
+fun readTestingFile(filePath: String): String {
+    val inputStream = object {}::class.java.getResourceAsStream(filePath)
+    return if (inputStream == null) "" else String(inputStream.readAllBytes(), StandardCharsets.UTF_8)
+}
+
 // Known SDM sections
 val sections = listOf("DATASOURCE", "WEBSITE", "SERVER")
 
@@ -122,6 +136,6 @@ fun main() = application {
         resizable = true,
         state = windowState
     ) {
-        App()
+        App(true)
     }
 }
