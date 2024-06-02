@@ -26,7 +26,7 @@ fun App(testMode: Boolean? = false) {
 
     val onSearchGetStatusAndUpdateTable = { commaSeparatedFilters: String? ->
         val sdmStatus = if (testMode == true) {
-            readTestingFile("/test/please_login.txt")
+            readTestingFile("/test/sdm_status.txt")
         } else {
             "sdm status".runCommand() ?: ""
         }
@@ -35,11 +35,17 @@ fun App(testMode: Boolean? = false) {
         resourcesTableState = sdmStatus.toResourcesTable().filter(keywords)
     }
 
+    val onClearFilters = {
+        filtersState = ""
+        onSearchGetStatusAndUpdateTable("")
+    }
+
     MaterialTheme {
         Scaffold(
             topBar = {
                 ScaffoldTopBar(
                     onSearch = onSearchGetStatusAndUpdateTable,
+                    onClear = onClearFilters,
                     onTextChanges = { filters -> filtersState = filters },
                     loadOnStartup = true,
                     filtersText = filtersState,
@@ -77,6 +83,6 @@ fun main() = application {
         resizable = true,
         state = windowState
     ) {
-        App(true)
+        App()
     }
 }
