@@ -41,7 +41,8 @@ fun App(testMode: Boolean? = false) {
                     onSearch = onSearchGetStatusAndUpdateTable,
                     onTextChanges = { filters -> filtersState = filters },
                     loadOnStartup = true,
-                    filtersText = filtersState
+                    filtersText = filtersState,
+                    cliFailed = failedCommandState
                 )
             },
             bottomBar = {
