@@ -58,7 +58,8 @@ fun App() {
                     color = Color.Red,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .background(Color.DarkGray)
                         .fillMaxHeight()
                 )
