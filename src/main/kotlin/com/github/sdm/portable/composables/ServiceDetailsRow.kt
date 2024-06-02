@@ -68,7 +68,7 @@ fun ServiceDetailsRow(text: String) {
     }
 }
 
-fun copyToClipboard(text: String, clipboardManager: ClipboardManager) {
-    clipboardManager.setText(AnnotatedString(text = text))
+fun copyToClipboard(text: String?, clipboardManager: ClipboardManager) {
+    clipboardManager.setText(AnnotatedString(text = "" + text))
     println("Copied text to clipboard: $text")
 }
