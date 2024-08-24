@@ -23,6 +23,7 @@ fun App(testMode: Boolean? = false) {
     var resourcesTableState by remember { mutableStateOf(ResourcesTable(emptyList())) }
     var failedCommandState by remember { mutableStateOf(false) }
     var filtersState by remember { mutableStateOf("") }
+    var connectedOnlyState by remember { mutableStateOf(false) }
 
     val onSearchGetStatusAndUpdateTable = { commaSeparatedFilters: String? ->
         val sdmStatus = if (testMode == true) {
@@ -32,12 +33,17 @@ fun App(testMode: Boolean? = false) {
         }
         failedCommandState = sdmStatus.isBlank() || sdmStatus.lowercase().contains("login again")
         val keywords = if (failedCommandState) "" else commaSeparatedFilters ?: ""
-        resourcesTableState = sdmStatus.toResourcesTable().filter(keywords)
+        resourcesTableState = sdmStatus.toResourcesTable().filter(keywords, connectedOnlyState)
     }
 
     val onClearFilters = {
         filtersState = ""
         onSearchGetStatusAndUpdateTable("")
+    }
+
+    val onToggleConnectedOnly = {
+        connectedOnlyState = !connectedOnlyState
+        onSearchGetStatusAndUpdateTable(filtersState)
     }
 
     MaterialTheme {
@@ -49,7 +55,9 @@ fun App(testMode: Boolean? = false) {
                     onTextChanges = { filters -> filtersState = filters },
                     loadOnStartup = true,
                     filtersText = filtersState,
-                    cliFailed = failedCommandState
+                    cliFailed = failedCommandState,
+                    onToggleConnectedOnly = onToggleConnectedOnly,
+                    connectedOnly = connectedOnlyState
                 )
             },
             bottomBar = {
@@ -79,7 +87,7 @@ fun main() = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "StrongDM (unofficial)",
+        title = "SDMp",
         resizable = true,
         state = windowState
     ) {

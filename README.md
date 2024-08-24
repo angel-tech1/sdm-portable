@@ -34,9 +34,14 @@ or using any of the following commands:
 
 ## Building a binary
 
-### Debian
-1. Run the following command:
-`./gradlew packageDeb`
+### Pre-requisited
+
+- Java SDK 17+
+- fakeroot (`sudo apt-get update && sudo apt-get install fakeroot`)
+
+### Debian compilation
+
+1. Build the debian binary `./gradlew packageDeb`
 2. Locate the .deb file under the build/compose/binaries folder.
 
 ### Other platforms

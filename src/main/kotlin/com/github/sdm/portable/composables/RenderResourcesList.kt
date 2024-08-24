@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.github.sdm.portable.domain.ResourcesTable
 
 // Known SDM sections
-val sections = listOf("DATASOURCE", "WEBSITE", "SERVER")
+val sections = listOf("DATASOURCE", "WEBSITE", "SERVER", "CLOUD")
 
 @Composable
 fun RenderResourcesList(
