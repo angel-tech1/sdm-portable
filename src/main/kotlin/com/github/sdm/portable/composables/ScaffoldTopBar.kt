@@ -17,7 +17,11 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun ScaffoldTopBar(
@@ -56,7 +60,7 @@ fun ScaffoldTopBar(
     }
 
     Column(
-      modifier = Modifier.fillMaxWidth(0.5F).background(Color.Gray)
+      modifier = Modifier.fillMaxWidth(0.5F).background(Color.LightGray)
     ) {
       Row(modifier = Modifier.fillMaxWidth()) {
         Checkbox(
@@ -64,6 +68,7 @@ fun ScaffoldTopBar(
           onCheckedChange = { onToggleConnectedOnly() },
           modifier = Modifier.fillMaxWidth(0.25F).height(56.dp)
         )
+
         Text(
           "connected",
           modifier = Modifier.align(Alignment.CenterVertically),
