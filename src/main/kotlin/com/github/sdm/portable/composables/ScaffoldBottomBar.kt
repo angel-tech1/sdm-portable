@@ -13,14 +13,14 @@ import androidx.compose.ui.unit.em
 
 @Composable
 fun ScaffoldBottomBar(itemCount: Int) {
-    Text(
-        "Resources found: $itemCount",
-        modifier = Modifier
-            .height(30.dp)
-            .background(Color.Black)
-            .fillMaxWidth()
-            .padding(2.dp),
-        fontSize = 0.9.em,
-        color = Color.White
-    )
+  Text(
+    "\uD83D\uDD39 Resources found: $itemCount",
+    modifier = Modifier
+      .height(30.dp)
+      .background(Color.Black)
+      .fillMaxWidth()
+      .padding(2.dp),
+    fontSize = 0.9.em,
+    color = Color.White
+  )
 }

@@ -35,7 +35,7 @@ fun ServiceDetailsRow(text: String) {
     Text(
       serviceId,
       modifier = Modifier
-        .padding(top = 5.dp, bottom = 7.dp)
+        .padding(top = 5.dp, bottom = 7.dp, start = 15.dp)
         .fillMaxHeight()
         .fillMaxWidth(fraction = 0.35f)
         .pointerHoverIcon(PointerIcon.Hand, overrideDescendants = true)

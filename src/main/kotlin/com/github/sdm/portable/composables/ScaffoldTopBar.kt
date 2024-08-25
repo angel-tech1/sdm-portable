@@ -86,7 +86,7 @@ fun ScaffoldTopBar(
         modifier = Modifier.fillMaxWidth(1F)
           .height(56.dp)
       ) {
-        Text("Clear")
+        Text("Clear \uD83E\uDDFC")
       }
     }
   }

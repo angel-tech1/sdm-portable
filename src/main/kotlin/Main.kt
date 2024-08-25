@@ -20,77 +20,77 @@ import java.nio.charset.StandardCharsets
 @Composable
 @Preview
 fun App(testMode: Boolean? = false) {
-    var resourcesTableState by remember { mutableStateOf(ResourcesTable(emptyList())) }
-    var failedCommandState by remember { mutableStateOf(false) }
-    var filtersState by remember { mutableStateOf("") }
-    var connectedOnlyState by remember { mutableStateOf(false) }
+  var resourcesTableState by remember { mutableStateOf(ResourcesTable(emptyList())) }
+  var failedCommandState by remember { mutableStateOf(false) }
+  var filtersState by remember { mutableStateOf("") }
+  var connectedOnlyState by remember { mutableStateOf(false) }
 
-    val onSearchGetStatusAndUpdateTable = { commaSeparatedFilters: String? ->
-        val sdmStatus = if (testMode == true) {
-            readTestingFile("/test/sdm_status.txt")
-        } else {
-            "sdm status".runCommand() ?: ""
-        }
-        failedCommandState = sdmStatus.isBlank() || sdmStatus.lowercase().contains("login again")
-        val keywords = if (failedCommandState) "" else commaSeparatedFilters ?: ""
-        resourcesTableState = sdmStatus.toResourcesTable().filter(keywords, connectedOnlyState)
+  val onSearchGetStatusAndUpdateTable = { commaSeparatedFilters: String? ->
+    val sdmStatus = if (testMode == true) {
+      readTestingFile("/test/sdm_status.txt")
+    } else {
+      "sdm status".runCommand() ?: ""
     }
+    failedCommandState = sdmStatus.isBlank() || sdmStatus.lowercase().contains("login again")
+    val keywords = if (failedCommandState) "" else commaSeparatedFilters ?: ""
+    resourcesTableState = sdmStatus.toResourcesTable().filter(keywords, connectedOnlyState)
+  }
 
-    val onClearFilters = {
-        filtersState = ""
-        onSearchGetStatusAndUpdateTable("")
-    }
+  val onClearFilters = {
+    filtersState = ""
+    onSearchGetStatusAndUpdateTable("")
+  }
 
-    val onToggleConnectedOnly = {
-        connectedOnlyState = !connectedOnlyState
-        onSearchGetStatusAndUpdateTable(filtersState)
-    }
+  val onToggleConnectedOnly = {
+    connectedOnlyState = !connectedOnlyState
+    onSearchGetStatusAndUpdateTable(filtersState)
+  }
 
-    MaterialTheme {
-        Scaffold(
-            topBar = {
-                ScaffoldTopBar(
-                    onSearch = onSearchGetStatusAndUpdateTable,
-                    onClear = onClearFilters,
-                    onTextChanges = { filters -> filtersState = filters },
-                    loadOnStartup = true,
-                    filtersText = filtersState,
-                    cliFailed = failedCommandState,
-                    onToggleConnectedOnly = onToggleConnectedOnly,
-                    connectedOnly = connectedOnlyState
-                )
-            },
-            bottomBar = {
-                ScaffoldBottomBar(resourcesTableState.resources.size)
-            }
-        ) {
-            if (failedCommandState) {
-                CliFailed()
-            } else {
-                RenderResourcesList(resourcesTableState, onSearchGetStatusAndUpdateTable, filtersState)
-            }
-        }
+  MaterialTheme {
+    Scaffold(
+      topBar = {
+        ScaffoldTopBar(
+          onSearch = onSearchGetStatusAndUpdateTable,
+          onClear = onClearFilters,
+          onTextChanges = { filters -> filtersState = filters },
+          loadOnStartup = true,
+          filtersText = filtersState,
+          cliFailed = failedCommandState,
+          onToggleConnectedOnly = onToggleConnectedOnly,
+          connectedOnly = connectedOnlyState
+        )
+      },
+      bottomBar = {
+        ScaffoldBottomBar(resourcesTableState.resources.size)
+      }
+    ) {
+      if (failedCommandState) {
+        CliFailed()
+      } else {
+        RenderResourcesList(resourcesTableState, onSearchGetStatusAndUpdateTable, filtersState)
+      }
     }
+  }
 }
 
 fun readTestingFile(filePath: String): String {
-    val inputStream = object {}::class.java.getResourceAsStream(filePath)
-    return if (inputStream == null) "" else String(inputStream.readAllBytes(), StandardCharsets.UTF_8)
+  val inputStream = object {}::class.java.getResourceAsStream(filePath)
+  return if (inputStream == null) "" else String(inputStream.readAllBytes(), StandardCharsets.UTF_8)
 }
 
 fun main() = application {
-    val windowState = rememberWindowState(
-        placement = WindowPlacement.Floating,
-        width = 1280.dp,
-        height = 800.dp
-    )
+  val windowState = rememberWindowState(
+    placement = WindowPlacement.Floating,
+    width = 1280.dp,
+    height = 800.dp
+  )
 
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "SDMp",
-        resizable = true,
-        state = windowState
-    ) {
-        App()
-    }
+  Window(
+    onCloseRequest = ::exitApplication,
+    title = "SDMp",
+    resizable = true,
+    state = windowState
+  ) {
+    App()
+  }
 }
