@@ -32,6 +32,9 @@ or using any of the following commands:
 ### Using apt-get
 `sudo apt-get install ./sdm-portable_X.X.X_amd64.deb`
 
+### Running JAR file
+`java -jar sdm_portable-linux-x64-1.0.3.jar`
+
 ## Building a binary
 
 ### Pre-requisited
