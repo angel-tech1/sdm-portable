@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ScaffoldTopBar(
+  onFullReload: (filter: String) -> Unit,
   onSearch: (filter: String) -> Unit,
   onClear: () -> Unit,
   onTextChanges: (filters: String) -> Unit,
@@ -38,7 +39,7 @@ fun ScaffoldTopBar(
   var initializedState by remember { mutableStateOf(false) }
 
   if (loadOnStartup && !initializedState) {
-    onSearch(filtersText)
+    onFullReload(filtersText)
     initializedState = true
   }
 

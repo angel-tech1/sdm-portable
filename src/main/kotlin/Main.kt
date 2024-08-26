@@ -1,7 +1,10 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
@@ -24,9 +27,10 @@ fun App(testMode: Boolean? = false) {
   var failedCommandState by remember { mutableStateOf(false) }
   var filtersState by remember { mutableStateOf("") }
   var connectedOnlyState by remember { mutableStateOf(false) }
+  var sdmStatus by remember { mutableStateOf("") }
 
-  val onSearchGetStatusAndUpdateTable = { commaSeparatedFilters: String? ->
-    val sdmStatus = if (testMode == true) {
+  val onFullReload = { commaSeparatedFilters: String? ->
+    sdmStatus = if (testMode == true) {
       readTestingFile("/test/sdm_status.txt")
     } else {
       "sdm status".runCommand() ?: ""
@@ -36,21 +40,27 @@ fun App(testMode: Boolean? = false) {
     resourcesTableState = sdmStatus.toResourcesTable().filter(keywords, connectedOnlyState)
   }
 
+  val onSearchFilterResults = { commaSeparatedFilters: String? ->
+    resourcesTableState = sdmStatus.toResourcesTable().filter(commaSeparatedFilters ?: "",
+      connectedOnlyState)
+  }
+
   val onClearFilters = {
     filtersState = ""
-    onSearchGetStatusAndUpdateTable("")
+    resourcesTableState = sdmStatus.toResourcesTable().filter(filtersState, connectedOnlyState)
   }
 
   val onToggleConnectedOnly = {
     connectedOnlyState = !connectedOnlyState
-    onSearchGetStatusAndUpdateTable(filtersState)
+    resourcesTableState = sdmStatus.toResourcesTable().filter(filtersState, connectedOnlyState)
   }
 
   MaterialTheme {
     Scaffold(
       topBar = {
         ScaffoldTopBar(
-          onSearch = onSearchGetStatusAndUpdateTable,
+          onFullReload = onFullReload,
+          onSearch = onSearchFilterResults,
           onClear = onClearFilters,
           onTextChanges = { filters -> filtersState = filters },
           loadOnStartup = true,
@@ -67,7 +77,7 @@ fun App(testMode: Boolean? = false) {
       if (failedCommandState) {
         CliFailed()
       } else {
-        RenderResourcesList(resourcesTableState, onSearchGetStatusAndUpdateTable, filtersState)
+        RenderResourcesList(resourcesTableState, onFullReload, filtersState)
       }
     }
   }
