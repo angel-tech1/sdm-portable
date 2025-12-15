@@ -1,7 +1,5 @@
 package com.github.sdm.portable.domain
 
-import com.github.sdm.portable.composables.renderSdmStatusLine
-
 data class ResourcesTable(
     var resources: List<String>
 )
