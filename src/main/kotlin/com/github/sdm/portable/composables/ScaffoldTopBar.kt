@@ -48,7 +48,7 @@ fun ScaffoldTopBar(
   }
 
   Row(modifier = Modifier.fillMaxWidth()) {
-    Column(modifier = Modifier.fillMaxWidth(0.8F)) {
+    Column(modifier = Modifier.fillMaxWidth(0.8F).background(Color.White)) {
       OutlinedTextField(
         value = filtersText,
         enabled = !cliFailed,
@@ -75,7 +75,7 @@ fun ScaffoldTopBar(
         Checkbox(
           checked = connectedOnly,
           onCheckedChange = { onToggleConnectedOnly() },
-          modifier = Modifier.fillMaxWidth(0.25F).height(56.dp)
+          modifier = Modifier.fillMaxWidth(0.25F).height(63.dp)
         )
 
         Text(
@@ -94,8 +94,7 @@ fun ScaffoldTopBar(
         onClick = {
           onClear()
         },
-        modifier = Modifier.fillMaxWidth(1F)
-          .height(56.dp),
+        modifier = Modifier.fillMaxWidth(1F).height(63.dp),
         colors = ButtonDefaults.buttonColors(
           containerColor = Color.Gray,
           contentColor = Color.White
