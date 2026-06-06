@@ -1,6 +1,5 @@
 package com.github.sdm.portable
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -24,7 +23,6 @@ import com.github.sdm.portable.os.runCommand
 import java.nio.charset.StandardCharsets
 
 @Composable
-@Preview
 fun App(testMode: Boolean? = false) {
   var resourcesTableState by remember { mutableStateOf(ResourcesTable(emptyList())) }
   var failedCommandState by remember { mutableStateOf(false) }

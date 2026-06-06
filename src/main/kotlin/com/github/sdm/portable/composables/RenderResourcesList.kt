@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.sdm.portable.domain.ResourcesTable
 
@@ -24,7 +25,7 @@ fun RenderResourcesList(
     modifier = Modifier
       .fillMaxWidth()
       .background(Color.Gray)
-      .fillMaxHeight(),
+      .fillMaxHeight().padding(top = Dp(60F), bottom = Dp(20F)),
   ) {
     items(count = resourcesTableState.resources.size) { item ->
       val sdmStatusLine = resourcesTableState.resources[item]

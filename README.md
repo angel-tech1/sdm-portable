@@ -44,8 +44,8 @@ or using any of the following commands:
 
 ### Debian compilation
 
-1. Build the debian binary `./gradlew packageDeb`
-2. Locate the .deb file under the build/compose/binaries folder.
+1. Build the debian binary `./gradlew packageReleaseDeb` (or `packageReleaseAppImage`, `packageReleaseRpm`, `packageReleaseUberJarForCurrentOS`)
+2. Locate the release file under the build/compose/binaries folder.
 
 ### Other platforms
 Use the standard Compose Multiplatform package commands.
