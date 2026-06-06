@@ -1,10 +1,6 @@
 package com.github.sdm.portable.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clipScrollableContainer
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -28,9 +24,7 @@ fun RenderResourcesList(
     modifier = Modifier
       .fillMaxWidth()
       .background(Color.Gray)
-      .clipScrollableContainer(Orientation.Vertical)
       .fillMaxHeight(),
-    userScrollEnabled = true
   ) {
     items(count = resourcesTableState.resources.size) { item ->
       val sdmStatusLine = resourcesTableState.resources[item]

@@ -5,23 +5,27 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun ScaffoldTopBar(
@@ -45,14 +49,18 @@ fun ScaffoldTopBar(
 
   Row(modifier = Modifier.fillMaxWidth()) {
     Column(modifier = Modifier.fillMaxWidth(0.8F)) {
-      TextField(
+      OutlinedTextField(
         value = filtersText,
         enabled = !cliFailed,
         onValueChange = onTextChanges,
         label = { Text("Find by comma-separated keywords") },
         modifier = Modifier.onKeyEvent {
-          onKeyEvent(it, onSearch, filtersText)
-          true
+          if (it.key == Key.Enter) {
+            onSearch(filtersText)
+            true
+          } else {
+            false
+          }
         }.fillMaxWidth(1F),
         leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
         singleLine = true,
@@ -72,6 +80,8 @@ fun ScaffoldTopBar(
 
         Text(
           "connected",
+          color = Color.Black,
+          fontWeight = FontWeight.Bold,
           modifier = Modifier.align(Alignment.CenterVertically),
         )
       }
@@ -85,24 +95,14 @@ fun ScaffoldTopBar(
           onClear()
         },
         modifier = Modifier.fillMaxWidth(1F)
-          .height(56.dp)
+          .height(56.dp),
+        colors = ButtonDefaults.buttonColors(
+          containerColor = Color.Gray,
+          contentColor = Color.White
+        )
       ) {
-        Text("Clear \uD83E\uDDFC")
+        Text("Clear")
       }
     }
-  }
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-private fun onKeyEvent(
-  it: KeyEvent?,
-  onSearch: (filter: String) -> Unit,
-  filtersText: String?
-) {
-  if (it == null || filtersText == null)
-    return // ignore
-
-  if (it.key == Key.Enter) {
-    onSearch(filtersText)
   }
 }

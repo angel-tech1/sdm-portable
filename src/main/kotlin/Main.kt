@@ -1,10 +1,13 @@
+package com.github.sdm.portable
+
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
@@ -89,18 +92,16 @@ fun readTestingFile(filePath: String): String {
 }
 
 fun main() = application {
-  val windowState = rememberWindowState(
-    placement = WindowPlacement.Floating,
-    width = 1280.dp,
-    height = 800.dp
-  )
-
   Window(
     onCloseRequest = ::exitApplication,
     title = "SDMp",
     resizable = true,
-    state = windowState
+    state = rememberWindowState(
+      placement = WindowPlacement.Floating,
+      width = 1280.dp,
+      height = 800.dp
+    )
   ) {
-    App()
+    App(testMode = true)
   }
 }

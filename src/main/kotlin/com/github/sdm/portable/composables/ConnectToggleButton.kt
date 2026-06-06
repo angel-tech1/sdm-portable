@@ -2,9 +2,8 @@ package com.github.sdm.portable.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,8 +27,8 @@ fun ConnectToggleButton(
             val command = if (disconnected) "connect" else "disconnect"
             "sdm $command $serviceId".runCommand(timeoutAmount = 5, afterCommand = afterToggle)
         },
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = if (disconnected) Color.Red else Color.Green,
+        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+            containerColor = if (disconnected) Color.Red else Color.Green,
             contentColor = if (disconnected) Color.White else Color.Black
         )
     ) {
