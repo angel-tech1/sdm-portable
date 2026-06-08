@@ -100,6 +100,6 @@ fun main() = application {
       height = 800.dp
     )
   ) {
-    App(testMode = true)
+    App()
   }
 }
