@@ -27,7 +27,6 @@ dependencies {
 
 compose.desktop {
     application {
-        javaHome = System.getenv("JDK_21")
         mainClass = "MainKt"
 
         nativeDistributions {
